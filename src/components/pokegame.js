@@ -11,20 +11,15 @@ const Pokegame = (props) => {
     )
   })
   const handOne = []
-  for (let step = 0; step <= 3; step += 1) {
-    // Runs 5 times, with values of step 0 through 4.
-    const index = Math.floor(Math.random() * pokemonComponents.length)
-    handOne.push(pokemonComponents[index])
-    pokemonComponents.splice(index, 1);
+  const handTwo = pokemonComponents
+
+  while(handTwo.length > handOne.length ) {
+    const index = Math.floor(Math.random() * handTwo.length)
+    const pokemon = handTwo.splice(index,1)[0]
+    handOne.push(pokemon)
   }
 
-  const handTwo = []
-  for (let step = 0; step <= 3; step += 1) {
-    // Runs 5 times, with values of step 0 through 4.
-    const index = Math.floor(Math.random() * pokemonComponents.length)
-    handTwo.push(pokemonComponents[index])
-    pokemonComponents.splice(index, 1);
-  }
+  console.log(handOne, handTwo)
 
   const expOne = handOne.map((pokemon) => {return pokemon.props.exp})
   const expTwo = handTwo.map((pokemon) => {return pokemon.props.exp})
@@ -38,25 +33,13 @@ const Pokegame = (props) => {
   const expOneTotal = expOne.reduce(addExp);
   const expTwoTotal = expTwo.reduce(addExp);
 
-  if (expOneTotal >= expTwoTotal) {
-    return (
-      <div className="poke-game">
-        <h1 style={{margin: "0 auto", width: "113px"}}>winner!</h1>
-        <PokeHand hand={handOne} winner={true}/>
-        <h1 style={{margin: "0 auto", width: "41px"}}>VS</h1>
-        <PokeHand hand={handTwo}/>
-      </div>
-    )
-  }else {
-    return (
-      <div className="poke-game">
-        <PokeHand hand={handOne}/>
-        <h1 style={{margin: "0 auto", width: "41px"}}>VS</h1>
-        <h1 style={{margin: "0 auto", width: "113px"}}>winner!</h1>
-        <PokeHand hand={handTwo} winner={true}/>
-      </div>
-    )
-  }
+  return (
+    <div className="poke-game">
+      <PokeHand hand={handOne} winner={expOneTotal>= expTwoTotal}/>
+      <h1 style={{margin: "0 auto", width: "41px"}}>VS</h1>
+      <PokeHand hand={handTwo} winner={expTwoTotal > expOneTotal}/>
+    </div>
+  )
 }
 
 export default Pokegame;
